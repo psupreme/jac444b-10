@@ -17,8 +17,10 @@ public class MainWindow extends javax.swing.JFrame {
     /**
      * Creates new form MainWindow
      */
-    public MainWindow() {
-        initComponents();
+    public MainWindow() {        
+        initComponents();        
+        
+        
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -92,8 +94,8 @@ public class MainWindow extends javax.swing.JFrame {
         panelStatusBarLayout.setHorizontalGroup(
             panelStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelStatusBarLayout.createSequentialGroup()
-                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 556, Short.MAX_VALUE))
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 555, Short.MAX_VALUE))
         );
         panelStatusBarLayout.setVerticalGroup(
             panelStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
