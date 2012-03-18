@@ -5,6 +5,7 @@
 package jac444b.a2;
 
 import org.jdesktop.swingx.JXMapKit;
+import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 /**
  *
@@ -32,7 +33,7 @@ public class MainWindow extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblStatus = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -75,24 +76,24 @@ public class MainWindow extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, 170, 480));
 
-        jLabel1.setText("Location: ");
+        lblStatus.setText("Location: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(0, 853, Short.MAX_VALUE))
+                .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 560, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
+                .addComponent(lblStatus)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jLabel1.getAccessibleContext().setAccessibleName("lblStatus");
+        lblStatus.getAccessibleContext().setAccessibleName("lblStatus");
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 900, -1));
 
@@ -177,7 +178,10 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void jXMapKit1MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jXMapKit1MouseMoved
-       //jXMapKit1.getAddressLocation();
+       GeoPosition location = jXMapKit1.getAddressLocation();
+       
+       lblStatus.setText("Location: " + location.getLatitude() + " " + location.getLongitude());
+       
     }//GEN-LAST:event_jXMapKit1MouseMoved
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -190,11 +194,11 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.jdesktop.swingx.JXMapKit jXMapKit1;
+    private javax.swing.JLabel lblStatus;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
