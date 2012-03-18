@@ -6,8 +6,12 @@ package jac444b.a2;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import org.jdesktop.swingx.JXMapKit;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
+import org.jdesktop.swingx.mapviewer.Waypoint;
+import org.jdesktop.swingx.mapviewer.WaypointPainter;
 
 /**
  *
@@ -38,6 +42,15 @@ public class MainWindow extends javax.swing.JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e) {
+                //if right mouse button is clicked
+                if(e.getButton() == 3){
+                    GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
+                    waypoints.add(new Waypoint(location.getLatitude(), location.getLongitude()));
+                    //paint the waypoints
+                    WaypointPainter painter = new WaypointPainter();
+                    painter.setWaypoints(waypoints);
+                    jxMap.getMainMap().setOverlayPainter(painter);
+                }
             }
 
             @Override
@@ -240,4 +253,5 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
+    private Set<Waypoint> waypoints = new HashSet<Waypoint>();
 }
