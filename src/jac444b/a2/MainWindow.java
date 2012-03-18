@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.ListModel;
 import org.jdesktop.swingx.JXMapKit;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.Waypoint;
@@ -25,8 +26,10 @@ public class MainWindow extends javax.swing.JFrame {
     public MainWindow() {        
         initComponents();       
                
-        ArrayList<Country> list = Country.AllCountries();
-      
+        for(int i = 0; i < countryList.size(); i++) {
+            listCountries.add(countryList.get(i).getName());
+        }
+        
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -84,8 +87,7 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap = new org.jdesktop.swingx.JXMapKit();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelTab1 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listCountries = new javax.swing.JList();
+        listCountries = new java.awt.List();
         panelStatusBar = new javax.swing.JPanel();
         lblStatus = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -110,17 +112,15 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
         getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 480));
 
-        jScrollPane1.setViewportView(listCountries);
-
         javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
         panelTab1.setLayout(panelTab1Layout);
         panelTab1Layout.setHorizontalGroup(
             panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+            .addComponent(listCountries, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
         );
         panelTab1Layout.setVerticalGroup(
             panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+            .addComponent(listCountries, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Countries", panelTab1);
@@ -240,11 +240,10 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.jdesktop.swingx.JXMapKit jxMap;
     private javax.swing.JLabel lblStatus;
-    private javax.swing.JList listCountries;
+    private java.awt.List listCountries;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JPanel panelStatusBar;
@@ -254,4 +253,5 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables
     private Set<Waypoint> waypoints = new HashSet<Waypoint>();
+    ArrayList<Country> countryList = Country.AllCountries();
 }
