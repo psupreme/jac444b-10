@@ -26,8 +26,8 @@ public class MainWindow extends javax.swing.JFrame {
             }
             @Override
             public void mouseMoved(MouseEvent e) {
-                        GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
-                        lblStatus.setText("Location: { " + location.getLatitude() + " , " + location.getLongitude() + " }");  
+                GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
+                lblStatus.setText("Location: { " + location.getLatitude() + " , " + location.getLongitude() + " }");  
             }
         });
     }
@@ -83,6 +83,8 @@ public class MainWindow extends javax.swing.JFrame {
 
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, 170, 480));
 
+        panelStatusBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         lblStatus.setText("Location: ");
 
         javax.swing.GroupLayout panelStatusBarLayout = new javax.swing.GroupLayout(panelStatusBar);
@@ -91,7 +93,7 @@ public class MainWindow extends javax.swing.JFrame {
             panelStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelStatusBarLayout.createSequentialGroup()
                 .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 560, Short.MAX_VALUE))
+                .addGap(0, 556, Short.MAX_VALUE))
         );
         panelStatusBarLayout.setVerticalGroup(
             panelStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
