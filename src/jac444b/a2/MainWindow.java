@@ -18,9 +18,8 @@ public class MainWindow extends javax.swing.JFrame {
      * Creates new form MainWindow
      */
     public MainWindow() {        
-        initComponents();        
-        
-        
+        initComponents();       
+                
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -32,6 +31,31 @@ public class MainWindow extends javax.swing.JFrame {
                 lblStatus.setText("Location: { " + location.getLatitude() + " , " + location.getLongitude() + " }");  
             }
         });
+        jxMap.getMainMap().addMouseListener(new java.awt.event.MouseListener() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                jxMap.setCenterPosition(new GeoPosition(60, -95.0));
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+            }
+        });
+        
     }
 
     /**
@@ -46,6 +70,8 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap = new org.jdesktop.swingx.JXMapKit();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelTab1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listCountries = new javax.swing.JList();
         panelStatusBar = new javax.swing.JPanel();
         lblStatus = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -70,18 +96,25 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
         getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 480));
 
+        listCountries.setModel(new javax.swing.AbstractListModel() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public Object getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(listCountries);
+
         javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
         panelTab1.setLayout(panelTab1Layout);
         panelTab1Layout.setHorizontalGroup(
             panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 165, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
         );
         panelTab1Layout.setVerticalGroup(
             panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 455, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab1", panelTab1);
+        jTabbedPane1.addTab("Countries", panelTab1);
 
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, 170, 480));
 
@@ -198,9 +231,11 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.jdesktop.swingx.JXMapKit jxMap;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JList listCountries;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JPanel panelStatusBar;
