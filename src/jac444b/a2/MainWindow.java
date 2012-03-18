@@ -5,6 +5,7 @@
 package jac444b.a2;
 
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import org.jdesktop.swingx.JXMapKit;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
@@ -19,7 +20,9 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {        
         initComponents();       
-                
+               
+        ArrayList<Country> list = Country.AllCountries();
+      
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -39,12 +42,10 @@ public class MainWindow extends javax.swing.JFrame {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                jxMap.setCenterPosition(new GeoPosition(60, -95.0));
             }
 
             @Override
@@ -96,11 +97,6 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
         getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 480));
 
-        listCountries.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(listCountries);
 
         javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
