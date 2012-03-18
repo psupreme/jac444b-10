@@ -4,6 +4,7 @@
  */
 package jac444b.a2;
 
+import java.awt.event.MouseEvent;
 import org.jdesktop.swingx.JXMapKit;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
@@ -18,6 +19,17 @@ public class MainWindow extends javax.swing.JFrame {
      */
     public MainWindow() {
         initComponents();
+        jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                        GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
+                        lblStatus.setText("Location: { " + location.getLatitude() + " , " + location.getLongitude() + " }");  
+            }
+        });
     }
 
     /**
@@ -54,11 +66,6 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
-        jxMap.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                jxMapMouseMoved(evt);
-            }
-        });
         getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 480));
 
         javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
@@ -174,14 +181,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         AboutWindow ab = new AboutWindow();
-        ab.setVisible(true);
+        ab.setVisible(true);    
     }//GEN-LAST:event_aboutMenuItemActionPerformed
-
-    private void jxMapMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jxMapMouseMoved
-       GeoPosition location = jxMap.getAddressLocation();
-       
-       lblStatus.setText("Location: " + location.getLatitude() + " " + location.getLongitude());       
-    }//GEN-LAST:event_jxMapMouseMoved
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
