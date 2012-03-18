@@ -123,14 +123,14 @@
     <Property name="useNullLayout" type="boolean" value="false"/>
   </Layout>
   <SubComponents>
-    <Component class="org.jdesktop.swingx.JXMapKit" name="jXMapKit1">
+    <Component class="org.jdesktop.swingx.JXMapKit" name="jxMap">
       <Properties>
         <Property name="defaultProvider" type="org.jdesktop.swingx.JXMapKit$DefaultProviders" editor="org.jdesktop.swingx.JXMapKitBeanInfo$DefaultProvidersPropertyEditor">
           <SerializedValue value="-84,-19,0,5,126,114,0,45,111,114,103,46,106,100,101,115,107,116,111,112,46,115,119,105,110,103,120,46,74,88,77,97,112,75,105,116,36,68,101,102,97,117,108,116,80,114,111,118,105,100,101,114,115,0,0,0,0,0,0,0,0,18,0,0,120,114,0,14,106,97,118,97,46,108,97,110,103,46,69,110,117,109,0,0,0,0,0,0,0,0,18,0,0,120,112,116,0,14,79,112,101,110,83,116,114,101,101,116,77,97,112,115"/>
         </Property>
       </Properties>
       <Events>
-        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jXMapKit1MouseMoved"/>
+        <EventHandler event="mouseMoved" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="jxMapMouseMoved"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -147,7 +147,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="jPanel3">
+        <Container class="javax.swing.JPanel" name="panelTab1">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="tab1">
@@ -171,7 +171,7 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel1">
+    <Container class="javax.swing.JPanel" name="panelStatusBar">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="0" y="480" width="900" height="-1"/>
