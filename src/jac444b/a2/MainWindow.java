@@ -353,7 +353,12 @@ public class MainWindow extends javax.swing.JFrame {
                     it.remove();
                 }
             }
-            listWaypoints.remove(listWaypoints.getSelectedIndex());
+            listWaypoints.remove(listWaypoints.getSelectedIndex());  
+            
+            //repaint the waypoints
+            WaypointPainter painter = new WaypointPainter();
+            painter.setWaypoints(waypoints);
+            jxMap.getMainMap().setOverlayPainter(painter);
         }
     }//GEN-LAST:event_btnRemoveWaypointsActionPerformed
 
