@@ -8,8 +8,6 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.ListModel;
-import org.jdesktop.swingx.JXMapKit;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.Waypoint;
 import org.jdesktop.swingx.mapviewer.WaypointPainter;
@@ -29,6 +27,8 @@ public class MainWindow extends javax.swing.JFrame {
         for(int i = 0; i < countryList.size(); i++) {
             listCountries.add(countryList.get(i).getName());
         }
+                
+        txtIpAddress.setText(HTTPUtility.GetIp());
         
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
             @Override
@@ -51,7 +51,7 @@ public class MainWindow extends javax.swing.JFrame {
                     waypoints.add(new Waypoint(location.getLatitude(), location.getLongitude()));
                     //paint the waypoints
                     WaypointPainter painter = new WaypointPainter();
-                    painter.setWaypoints(waypoints);
+                    painter.setWaypoints(waypoints);                    
                     jxMap.getMainMap().setOverlayPainter(painter);
                 }
             }
@@ -89,8 +89,9 @@ public class MainWindow extends javax.swing.JFrame {
         panelTab1 = new javax.swing.JPanel();
         listCountries = new java.awt.List();
         jPanel1 = new javax.swing.JPanel();
-        txtIpAddress = new javax.swing.JTextField();
-        lblIpAddress = new javax.swing.JLabel();
+        btnSearchIP = new java.awt.Button();
+        txtIpAddress = new java.awt.TextField();
+        lblIpAddress = new java.awt.Label();
         panelStatusBar = new javax.swing.JPanel();
         lblStatus = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -134,6 +135,13 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Countries", panelTab1);
 
+        btnSearchIP.setLabel("Lookup");
+        btnSearchIP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchIPActionPerformed(evt);
+            }
+        });
+
         lblIpAddress.setText("IP Address:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -143,19 +151,28 @@ public class MainWindow extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
-                    .addComponent(txtIpAddress, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 88, Short.MAX_VALUE)
+                        .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblIpAddress)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
                 .addComponent(txtIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(404, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(369, Short.MAX_VALUE))
         );
+
+        btnSearchIP.getAccessibleContext().setAccessibleName("btnSearchIP");
 
         jTabbedPane1.addTab("IP Lookup", jPanel1);
 
@@ -269,8 +286,25 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap.setCenterPosition(c.getLocation());
     }//GEN-LAST:event_listCountriesActionPerformed
 
+    private void btnSearchIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchIPActionPerformed
+        if(txtIpAddress.getText().trim().length() <= 0)
+            return;
+        String info = HTTPUtility.DownloadWebsite("http://www.geoiptool.com/en/?IP="+txtIpAddress.getText().trim());
+        
+        String longitudeStr = StringHelper.GetStringBetween(info, "<td align=\"right\"><span class=\"arial\">Longitude:</span></td>", "</td>", 0);  
+        longitudeStr = longitudeStr.substring(longitudeStr.indexOf('>')+1).trim();
+        
+        String latitudeStr = StringHelper.GetStringBetween(info, "<td align=\"right\"><span class=\"arial\">Latitude:</span></td>", "</td>", 0);  
+        latitudeStr = latitudeStr.substring(latitudeStr.indexOf('>')+1).trim();    
+        
+        GeoPosition position = new GeoPosition(Double.valueOf(latitudeStr), Double.valueOf(longitudeStr));
+        jxMap.setCenterPosition(position);
+        
+    }//GEN-LAST:event_btnSearchIPActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private java.awt.Button btnSearchIP;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -282,7 +316,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.jdesktop.swingx.JXMapKit jxMap;
-    private javax.swing.JLabel lblIpAddress;
+    private java.awt.Label lblIpAddress;
     private javax.swing.JLabel lblStatus;
     private java.awt.List listCountries;
     private javax.swing.JMenuBar menuBar;
@@ -292,7 +326,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
-    private javax.swing.JTextField txtIpAddress;
+    private java.awt.TextField txtIpAddress;
     // End of variables declaration//GEN-END:variables
     private Set<Waypoint> waypoints = new HashSet<Waypoint>();
     ArrayList<Country> countryList = Country.AllCountries();

@@ -1,5 +1,5 @@
 package jac444b.a2;
-import jac444b.*;
+
 
 /**
  *

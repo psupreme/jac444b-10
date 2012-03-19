@@ -185,11 +185,18 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="lblIpAddress" pref="145" max="32767" attributes="0"/>
-                          <Component id="txtIpAddress" alignment="1" max="32767" attributes="0"/>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="0" pref="88" max="32767" attributes="0"/>
+                              <Component id="btnSearchIP" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="txtIpAddress" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="lblIpAddress" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -200,17 +207,30 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="lblIpAddress" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Component id="txtIpAddress" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="404" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="btnSearchIP" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="369" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JTextField" name="txtIpAddress">
+            <Component class="java.awt.Button" name="btnSearchIP">
+              <Properties>
+                <Property name="label" type="java.lang.String" value="Lookup"/>
+              </Properties>
+              <AccessibilityProperties>
+                <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="btnSearchIP"/>
+              </AccessibilityProperties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSearchIPActionPerformed"/>
+              </Events>
             </Component>
-            <Component class="javax.swing.JLabel" name="lblIpAddress">
+            <Component class="java.awt.TextField" name="txtIpAddress">
+            </Component>
+            <Component class="java.awt.Label" name="lblIpAddress">
               <Properties>
                 <Property name="text" type="java.lang.String" value="IP Address:"/>
               </Properties>
