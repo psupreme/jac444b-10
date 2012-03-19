@@ -161,7 +161,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="listCountries" alignment="1" pref="440" max="32767" attributes="0"/>
+                  <Component id="listCountries" alignment="1" pref="436" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -211,7 +211,7 @@
                       <Component id="txtIpAddress" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnSearchIP" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="354" max="32767" attributes="0"/>
+                      <EmptySpace pref="350" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -260,7 +260,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="listWaypoints" pref="396" max="32767" attributes="0"/>
+                      <Component id="listWaypoints" pref="392" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnRemoveWaypoints" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>

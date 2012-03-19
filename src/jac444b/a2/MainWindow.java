@@ -7,6 +7,7 @@ package jac444b.a2;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.Waypoint;
@@ -51,8 +52,14 @@ public class MainWindow extends javax.swing.JFrame {
                     waypoints.add(new Waypoint(location.getLatitude(), location.getLongitude()));
                     //paint the waypoints
                     WaypointPainter painter = new WaypointPainter();
-                    painter.setWaypoints(waypoints);                    
+                    painter.setWaypoints(waypoints);
                     jxMap.getMainMap().setOverlayPainter(painter);
+                    listWaypoints.removeAll();
+                    for(Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();)
+                    {
+                        Waypoint w = it.next();
+                        listWaypoints.add(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
+                    }
                 }
             }
 
