@@ -112,6 +112,12 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
         getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 480));
 
+        listCountries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listCountriesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
         panelTab1.setLayout(panelTab1Layout);
         panelTab1Layout.setHorizontalGroup(
@@ -229,6 +235,11 @@ public class MainWindow extends javax.swing.JFrame {
         AboutWindow ab = new AboutWindow();
         ab.setVisible(true);    
     }//GEN-LAST:event_aboutMenuItemActionPerformed
+
+    private void listCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listCountriesActionPerformed
+        Country c = countryList.get(listCountries.getSelectedIndex());
+        jxMap.setCenterPosition(c.getLocation());
+    }//GEN-LAST:event_listCountriesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
