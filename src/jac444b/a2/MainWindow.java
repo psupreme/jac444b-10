@@ -89,9 +89,11 @@ public class MainWindow extends javax.swing.JFrame {
         panelTab1 = new javax.swing.JPanel();
         listCountries = new java.awt.List();
         jPanel1 = new javax.swing.JPanel();
-        btnSearchIP = new java.awt.Button();
-        txtIpAddress = new java.awt.TextField();
-        lblIpAddress = new java.awt.Label();
+        txtIpAddress = new javax.swing.JTextField();
+        lblIpAddress = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        listWaypoints = new java.awt.List();
+        btnRemoveWaypoints = new java.awt.Button();
         panelStatusBar = new javax.swing.JPanel();
         lblStatus = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -130,7 +132,7 @@ public class MainWindow extends javax.swing.JFrame {
         );
         panelTab1Layout.setVerticalGroup(
             panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(listCountries, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+            .addComponent(listCountries, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Countries", panelTab1);
@@ -175,6 +177,34 @@ public class MainWindow extends javax.swing.JFrame {
         btnSearchIP.getAccessibleContext().setAccessibleName("btnSearchIP");
 
         jTabbedPane1.addTab("IP Lookup", jPanel1);
+
+        btnRemoveWaypoints.setLabel("Remove Waypoint");
+        btnRemoveWaypoints.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveWaypointsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addContainerGap())
+            .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Waypoints", jPanel2);
 
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, 170, 480));
 
@@ -304,7 +334,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
-    private java.awt.Button btnSearchIP;
+    private java.awt.Button btnRemoveWaypoints;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -314,11 +344,13 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.jdesktop.swingx.JXMapKit jxMap;
     private java.awt.Label lblIpAddress;
     private javax.swing.JLabel lblStatus;
     private java.awt.List listCountries;
+    private java.awt.List listWaypoints;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JPanel panelStatusBar;
