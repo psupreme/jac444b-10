@@ -145,7 +145,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        lblIpAddress.setText("label1");
+        lblIpAddress.setText("IP Address:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

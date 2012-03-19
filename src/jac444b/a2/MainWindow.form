@@ -232,7 +232,7 @@
             </Component>
             <Component class="java.awt.Label" name="lblIpAddress">
               <Properties>
-                <Property name="text" type="java.lang.String" value="label1"/>
+                <Property name="text" type="java.lang.String" value="IP Address:"/>
               </Properties>
             </Component>
           </SubComponents>
