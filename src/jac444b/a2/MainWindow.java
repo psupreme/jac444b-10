@@ -124,7 +124,7 @@ public class MainWindow extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
-        getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 480));
+        getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 480));
 
         listCountries.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,11 +136,11 @@ public class MainWindow extends javax.swing.JFrame {
         panelTab1.setLayout(panelTab1Layout);
         panelTab1Layout.setHorizontalGroup(
             panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(listCountries, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+            .addComponent(listCountries, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
         );
         panelTab1Layout.setVerticalGroup(
             panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(listCountries, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+            .addComponent(listCountries, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Countries", panelTab1);
@@ -162,7 +162,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 88, Short.MAX_VALUE)
+                        .addGap(0, 118, Short.MAX_VALUE)
                         .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txtIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -179,7 +179,7 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(txtIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(350, Short.MAX_VALUE))
+                .addContainerGap(369, Short.MAX_VALUE))
         );
 
         btnSearchIP.getAccessibleContext().setAccessibleName("btnSearchIP");
@@ -199,14 +199,14 @@ public class MainWindow extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 392, Short.MAX_VALUE)
+                .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -214,7 +214,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Waypoints", jPanel2);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 0, 170, 480));
+        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 200, 480));
 
         panelStatusBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -226,7 +226,7 @@ public class MainWindow extends javax.swing.JFrame {
             panelStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelStatusBarLayout.createSequentialGroup()
                 .addComponent(lblStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 555, Short.MAX_VALUE))
+                .addGap(0, 635, Short.MAX_VALUE))
         );
         panelStatusBarLayout.setVerticalGroup(
             panelStatusBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -237,7 +237,7 @@ public class MainWindow extends javax.swing.JFrame {
 
         lblStatus.getAccessibleContext().setAccessibleName("lblStatus");
 
-        getContentPane().add(panelStatusBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 900, -1));
+        getContentPane().add(panelStatusBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 480, 980, -1));
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
