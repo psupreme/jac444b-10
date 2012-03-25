@@ -17,7 +17,7 @@ import org.jdesktop.swingx.mapviewer.WaypointRenderer;
  */
 public class CustomWaypointRenderer implements WaypointRenderer{
     public boolean paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint wp) {
-        WaypointExtention wwp =  (WaypointExtention)wp;
+        WaypointExtension wwp =  (WaypointExtension)wp;
 
         //draw tab
         g.setPaint(new Color(0,0,255,200));
