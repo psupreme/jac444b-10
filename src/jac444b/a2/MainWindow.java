@@ -4,19 +4,21 @@
  */
 package jac444b.a2;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
+import org.jdesktop.swingx.JXMapViewer;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.Waypoint;
 import org.jdesktop.swingx.mapviewer.WaypointPainter;
+import org.jdesktop.swingx.mapviewer.WaypointRenderer;
 
 /**
  *
@@ -24,11 +26,15 @@ import org.jdesktop.swingx.mapviewer.WaypointPainter;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    void AddWaypoint(Waypoint wp) {
+    void AddWaypoint(WaypointExtention wp) {
         waypoints.add(wp);
         WaypointPainter painter = new WaypointPainter();
-        painter.setWaypoints(waypoints);
-        jxMap.getMainMap().setOverlayPainter(painter);
+        painter.setWaypoints(waypoints);   
+    //create a renderer
+    painter.setRenderer(new CustomWaypointRenderer());        
+            jxMap.getMainMap().setOverlayPainter(painter);
+            jxMap.getMainMap().repaint();
+            
         listWaypoints.removeAll();
         for(Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();)
         {
@@ -67,7 +73,7 @@ public class MainWindow extends javax.swing.JFrame {
                 //if right mouse button is clicked
                 if(e.getButton() == 3){
                     GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
-                    AddWaypoint(new Waypoint(location.getLatitude(), location.getLongitude()));
+                    AddWaypoint(new WaypointExtention("test", location));
                     jTabbedPane1.setSelectedIndex(2);
                 }
             }
@@ -415,7 +421,7 @@ public class MainWindow extends javax.swing.JFrame {
         GeoPosition position = new GeoPosition(Double.valueOf(geoipData.get("latitude")), Double.valueOf(geoipData.get("longitude")));
         
         if(chkPlaceMarker.isSelected()) {
-            AddWaypoint(new Waypoint(position));
+            AddWaypoint(new WaypointExtention("tet", position));
         }        
         
         jxMap.setCenterPosition(position);
@@ -439,13 +445,25 @@ public class MainWindow extends javax.swing.JFrame {
             //repaint the waypoints
             WaypointPainter painter = new WaypointPainter();
             painter.setWaypoints(waypoints);
+            painter.setRenderer(new CustomWaypointRenderer());
             jxMap.getMainMap().setOverlayPainter(painter);
         }
     }//GEN-LAST:event_btnRemoveWaypointsActionPerformed
 
     private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
-
-
+        JFileChooser fc = new JFileChooser();
+        int retVal = fc.showOpenDialog(menuBar);
+        if (retVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            if(file.exists()){
+                try {
+                    FileReader fr = new FileReader(file);
+                    
+                } catch (FileNotFoundException ex) {
+                    //TODO: code exception
+                }
+            }
+        }
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
