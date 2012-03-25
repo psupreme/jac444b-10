@@ -26,18 +26,17 @@ import org.jdesktop.swingx.mapviewer.WaypointRenderer;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    void AddWaypoint(WaypointExtention wp) {
+    void AddWaypoint(WaypointExtension wp) {
         waypoints.add(wp);
         WaypointPainter painter = new WaypointPainter();
-        painter.setWaypoints(waypoints);   
-    //create a renderer
-    painter.setRenderer(new CustomWaypointRenderer());        
-            jxMap.getMainMap().setOverlayPainter(painter);
-            jxMap.getMainMap().repaint();
-            
+        painter.setWaypoints(waypoints);
+        //create a renderer
+        painter.setRenderer(new CustomWaypointRenderer());
+        jxMap.getMainMap().setOverlayPainter(painter);
+        jxMap.getMainMap().repaint();
+
         listWaypoints.removeAll();
-        for(Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();)
-        {
+        for (Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();) {
             Waypoint w = it.next();
             listWaypoints.add(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
         }
@@ -46,24 +45,25 @@ public class MainWindow extends javax.swing.JFrame {
     /*
      * Creates new form MainWindow
      */
-    public MainWindow() { 
-        initComponents();       
-               
-        for(int i = 0; i < countryList.size(); i++) {
+    public MainWindow() {
+        initComponents();
+
+        for (int i = 0; i < countryList.size(); i++) {
             listCountries.add(countryList.get(i).getName());
         }
-                
+
         txtIpAddress.setText(HTTPUtility.GetIp());
-        
+
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
+
             @Override
             public void mouseDragged(MouseEvent e) {
-                
             }
+
             @Override
             public void mouseMoved(MouseEvent e) {
                 GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
-                lblStatus.setText("Location: { " + location.getLatitude() + " , " + location.getLongitude() + " }");  
+                lblStatus.setText("Location: { " + location.getLatitude() + " , " + location.getLongitude() + " }");
             }
         });
         jxMap.getMainMap().addMouseListener(new java.awt.event.MouseListener() {
@@ -71,9 +71,9 @@ public class MainWindow extends javax.swing.JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //if right mouse button is clicked
-                if(e.getButton() == 3){
+                if (e.getButton() == 3) {
                     GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
-                    AddWaypoint(new WaypointExtention("test", location));
+                    AddWaypoint(new WaypointExtension("test", location));
                     jTabbedPane1.setSelectedIndex(2);
                 }
             }
@@ -94,7 +94,7 @@ public class MainWindow extends javax.swing.JFrame {
             public void mouseExited(MouseEvent e) {
             }
         });
-        
+
     }
 
     /*
@@ -383,65 +383,63 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         AboutWindow ab = new AboutWindow();
-        ab.setVisible(true);    
+        ab.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
-    
     private void listCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listCountriesActionPerformed
         Country c = countryList.get(listCountries.getSelectedIndex());
         jxMap.setCenterPosition(c.getLocation());
     }//GEN-LAST:event_listCountriesActionPerformed
 
     private void btnSearchIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchIPActionPerformed
-        if(txtIpAddress.getText().trim().length() <= 0)
+        if (txtIpAddress.getText().trim().length() <= 0) {
             return;
+        }
         //Get the json data
-        String info = HTTPUtility.DownloadWebsite("http://freegeoip.net/json/"+txtIpAddress.getText().trim());
+        String info = HTTPUtility.DownloadWebsite("http://freegeoip.net/json/" + txtIpAddress.getText().trim());
         //Remove the braces and get the elements
-        String[] values = info.replace("{", "").replace("}","").split(",");
+        String[] values = info.replace("{", "").replace("}", "").split(",");
         //A dictionary to store all geoIp data
-        Map<String, String> geoipData = new HashMap<String,String>();
+        Map<String, String> geoipData = new HashMap<String, String>();
         //Simple parsing for json elements
-        for(String element : values) {
+        for (String element : values) {
             //Get the data on both sides of the :
-            String[] keyValue = element.replace("\"","").split(":");
+            String[] keyValue = element.replace("\"", "").split(":");
             //Stick it in the dictionary
             geoipData.put(keyValue[0].trim(), keyValue[1].trim());
-        } 
+        }
         //Get the table model to start adding elements
-        DefaultTableModel tableModel = (DefaultTableModel)tableGeoIP.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
         //Remove all the rows in the table (clear it)
-        while(tableGeoIP.getRowCount()>0)
+        while (tableGeoIP.getRowCount() > 0) {
             tableModel.removeRow(0);
-        for(String key : geoipData.keySet()) {
-            String friendlyKey = Character.toUpperCase(key.charAt(0)) + key.substring(1).replace("_"," ");
-            tableModel.addRow(new String[] { friendlyKey, geoipData.get(key)});
-        }   
-        
+        }
+        for (String key : geoipData.keySet()) {
+            String friendlyKey = Character.toUpperCase(key.charAt(0)) + key.substring(1).replace("_", " ");
+            tableModel.addRow(new String[]{friendlyKey, geoipData.get(key)});
+        }
+
         GeoPosition position = new GeoPosition(Double.valueOf(geoipData.get("latitude")), Double.valueOf(geoipData.get("longitude")));
-        
-        if(chkPlaceMarker.isSelected()) {
-            AddWaypoint(new WaypointExtention("tet", position));
-        }        
-        
+
+        if (chkPlaceMarker.isSelected()) {
+            AddWaypoint(new WaypointExtension("tet", position));
+        }
+
         jxMap.setCenterPosition(position);
-        
+
     }//GEN-LAST:event_btnSearchIPActionPerformed
 
     private void btnRemoveWaypointsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveWaypointsActionPerformed
-	if(listWaypoints.getSelectedIndex() >= 0)
-        {
-            for(Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();)
-            {
+        if (listWaypoints.getSelectedIndex() >= 0) {
+            for (Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();) {
                 Waypoint wp = it.next();
-                if(listWaypoints.getSelectedItem().split(" ")[0].equals(Double.toString(wp.getPosition().getLatitude())) &&
-                        listWaypoints.getSelectedItem().split(" ")[1].equals(Double.toString(wp.getPosition().getLongitude())))
-                {
+                if (listWaypoints.getSelectedItem().split(" ")[0].equals(Double.toString(wp.getPosition().getLatitude()))
+                        && listWaypoints.getSelectedItem().split(" ")[1].equals(Double.toString(wp.getPosition().getLongitude()))) {
                     it.remove();
                 }
             }
-            listWaypoints.remove(listWaypoints.getSelectedIndex());  
-            
+            listWaypoints.remove(listWaypoints.getSelectedIndex());
+
             //repaint the waypoints
             WaypointPainter painter = new WaypointPainter();
             painter.setWaypoints(waypoints);
@@ -455,37 +453,85 @@ public class MainWindow extends javax.swing.JFrame {
         int retVal = fc.showOpenDialog(menuBar);
         if (retVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
-            if(file.exists()){
+            if (file.exists()) {
+                WaypointData wd = null;
                 try {
-                    FileReader fr = new FileReader(file);
-                    
-                } catch (FileNotFoundException ex) {
-                    //TODO: code exception
+                    // opening a flow Input since the file "personne.serial"
+                    FileInputStream fis = new FileInputStream(file);
+                    // creation a "Flow object " with the flow file
+                    ObjectInputStream ois = new ObjectInputStream(fis);
+                    try {
+                        //clear the waypoints
+                        waypoints.clear();
+                        // deserialize
+                        while ((wd = (WaypointData) ois.readObject()) != null) {
+                            waypoints.add(new WaypointExtension(wd.getText(), new GeoPosition(wd.getLatitude(), wd.getLongitude())));
+                        }
+
+                    } catch (EOFException eof) {//after reading the file
+                        //clear the waypoints list
+                        listWaypoints.removeAll();
+                        //re-add the waypoinds
+                        for (Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();) {
+                            Waypoint w = it.next();
+                            listWaypoints.add(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
+                        }
+                        //repaint the waypoints
+                        WaypointPainter painter = new WaypointPainter();
+                        painter.setWaypoints(waypoints);
+                        painter.setRenderer(new CustomWaypointRenderer());
+                        jxMap.getMainMap().setOverlayPainter(painter);
+                        
+                    } finally {
+                        // close the streams
+                        try {
+                            ois.close();
+                        } finally {
+                            fis.close();
+                        }
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
+
             }
         }
     }//GEN-LAST:event_openMenuItemActionPerformed
 
     private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
+        //create the filechooser
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Save");
         fc.setApproveButtonText("Save");
         
+        //get the selected file
         int retVal = fc.showOpenDialog(menuBar);
         if (retVal == JFileChooser.APPROVE_OPTION) {
             File file = fc.getSelectedFile();
             try {
-                    PrintWriter out = new PrintWriter(new FileWriter(file));
-
-                    // Write text to file
-                    for(Waypoint w : waypoints)
-                    {
-                        out.println(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
+                //create the file steam
+                FileOutputStream fis = new FileOutputStream(file);
+                // create the object stream
+                ObjectOutputStream ois = new ObjectOutputStream(fis);
+                try {
+                    //write each object in waypoints
+                    for (Waypoint w : waypoints) {
+                        ois.writeObject(new WaypointData(((WaypointExtension) w).getText(), w.getPosition().getLatitude(), w.getPosition().getLongitude()));
                     }
-                    out.close();
-		} catch (IOException e){
-                    //TODO: code exception
-		}
+                    //empty the buffer
+                    ois.flush();
+
+                } finally {
+                    //close the streams
+                    try {
+                        ois.close();
+                    } finally {
+                        fis.close();
+                    }
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
         } else {
             //TODO: code exception
@@ -493,21 +539,32 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_saveAsMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-        File file = new File(System.getProperty("user.dir")+"\\waypoints.txt");
-        try {
-                PrintWriter out = new PrintWriter(new FileWriter(file));
+        File file = new File(System.getProperty("user.dir") + "\\waypoints");
+            try {
+                //create the file steam
+                FileOutputStream fis = new FileOutputStream(file);
+                // create the object stream
+                ObjectOutputStream ois = new ObjectOutputStream(fis);
+                try {
+                    //write each object in waypoints
+                    for (Waypoint w : waypoints) {
+                        ois.writeObject(new WaypointData(((WaypointExtension) w).getText(), w.getPosition().getLatitude(), w.getPosition().getLongitude()));
+                    }
+                    //empty the buffer
+                    ois.flush();
 
-                // Write text to file
-                for(Waypoint w : waypoints)
-                {
-                    out.println(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
+                } finally {
+                    //close the streams
+                    try {
+                        ois.close();
+                    } finally {
+                        fis.close();
+                    }
                 }
-                out.close();
-            } catch (IOException e){
-                //TODO: code exception
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
     }//GEN-LAST:event_saveMenuItemActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private java.awt.Button btnRemoveWaypoints;
