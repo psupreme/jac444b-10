@@ -26,7 +26,7 @@ import org.jdesktop.swingx.mapviewer.WaypointRenderer;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    void AddWaypoint(WaypointExtension wp) {
+    private void AddWaypoint(WaypointExtension wp) {
         waypoints.add(wp);
         WaypointPainter painter = new WaypointPainter();
         painter.setWaypoints(waypoints);
@@ -42,7 +42,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
     
-    void AddWaypointByIP(String ipAddress, boolean addMarker, boolean showMetaData)
+    private void AddWaypointByIP(String ipAddress, boolean addMarker, boolean showMetaData)
     {
         //Get the json data
         String info = HTTPUtility.DownloadWebsite("http://freegeoip.net/json/" + ipAddress);
@@ -137,7 +137,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        
+        //Add the waypoint on startup
         AddWaypointByIP(txtIpAddress.getText().trim(), true, true);
     }
 
@@ -152,8 +152,6 @@ public class MainWindow extends javax.swing.JFrame {
 
         jxMap = new org.jdesktop.swingx.JXMapKit();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        panelTab1 = new javax.swing.JPanel();
-        listCountries = new java.awt.List();
         jPanel1 = new javax.swing.JPanel();
         btnSearchIP = new java.awt.Button();
         txtIpAddress = new java.awt.TextField();
@@ -168,6 +166,9 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         listWaypoints = new java.awt.List();
         btnRemoveWaypoints = new java.awt.Button();
+        panelTab1 = new javax.swing.JPanel();
+        listCountries = new java.awt.List();
+        chkCountryPlaceMarker = new javax.swing.JCheckBox();
         panelStatusBar = new javax.swing.JPanel();
         lblStatus = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -192,25 +193,6 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
         getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 480));
 
-        listCountries.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                listCountriesActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
-        panelTab1.setLayout(panelTab1Layout);
-        panelTab1Layout.setHorizontalGroup(
-            panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(listCountries, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
-        );
-        panelTab1Layout.setVerticalGroup(
-            panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(listCountries, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Countries", panelTab1);
-
         btnSearchIP.setLabel("Lookup");
         btnSearchIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,7 +200,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        lblIpAddress.setText("IP Address:");
+        lblIpAddress.setText("IP Address or Hostname:");
 
         tableGeoIP.setAutoCreateRowSorter(true);
         tableGeoIP.setModel(new javax.swing.table.DefaultTableModel(
@@ -309,6 +291,36 @@ public class MainWindow extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Waypoints", jPanel2);
+
+        listCountries.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        listCountries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listCountriesActionPerformed(evt);
+            }
+        });
+
+        chkCountryPlaceMarker.setText("Place Marker");
+
+        javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
+        panelTab1.setLayout(panelTab1Layout);
+        panelTab1Layout.setHorizontalGroup(
+            panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTab1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(chkCountryPlaceMarker, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(listCountries, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        panelTab1Layout.setVerticalGroup(
+            panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTab1Layout.createSequentialGroup()
+                .addComponent(chkCountryPlaceMarker)
+                .addGap(1, 1, 1)
+                .addComponent(listCountries, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Countries", panelTab1);
 
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 200, 480));
 
@@ -431,7 +443,10 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void listCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listCountriesActionPerformed
-        Country c = countryList.get(listCountries.getSelectedIndex());
+        Country c = countryList.get(listCountries.getSelectedIndex());        
+        if(chkCountryPlaceMarker.isSelected()) {
+             AddWaypoint(new WaypointExtension(c.getName(), c.getLocation()));
+        }
         jxMap.setCenterPosition(c.getLocation());
     }//GEN-LAST:event_listCountriesActionPerformed
 
@@ -582,6 +597,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutMenuItem;
     private java.awt.Button btnRemoveWaypoints;
     private java.awt.Button btnSearchIP;
+    private javax.swing.JCheckBox chkCountryPlaceMarker;
     private javax.swing.JCheckBox chkPlaceMarker;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
