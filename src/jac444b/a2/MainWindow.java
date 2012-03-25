@@ -53,12 +53,12 @@ public class MainWindow extends javax.swing.JFrame {
         String[] values = info.replace("{", "").replace("}", "").split(",");
         //A dictionary to store all geoIp data        
         Map<String, String> geoipData = new HashMap<String, String>();
-        try {
-            geoipData = new Gson().fromJson(info, new TypeToken<HashMap<String,String>>(){}.getType());
-        }
-        catch(JsonSyntaxException ex) {
-            //Bad host or ip, just exit!
-            return;
+        //Simple parsing for json elements
+        for (String element : values) {
+            //Get the data on both sides of the :
+            String[] keyValue = element.replace("\"", "").split(":");
+            //Stick it in the dictionary
+            geoipData.put(keyValue[0].trim(), keyValue[1].trim());
         }
         
         //Get the table model to start adding elements
@@ -156,21 +156,30 @@ public class MainWindow extends javax.swing.JFrame {
 
         jxMap = new org.jdesktop.swingx.JXMapKit();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        btnSearchIP = new java.awt.Button();
-        txtIpAddress = new java.awt.TextField();
-        lblIpAddress = new java.awt.Label();
+        panelLookup = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableGeoIP = new javax.swing.JTable() {
             public boolean isCellEditable(int rowIndex, int vColIndex) {
                 return false;
             }
         };
-        chkPlaceMarker = new javax.swing.JCheckBox();
+        label1 = new java.awt.Label();
+        jPanel1 = new javax.swing.JPanel();
+        label2 = new java.awt.Label();
+        spnLongitude = new javax.swing.JSpinner();
+        spnLatitude = new javax.swing.JSpinner();
+        label3 = new java.awt.Label();
+        btnGotoLongLat = new java.awt.Button();
+        chkPlaceMarkerLongLat = new javax.swing.JCheckBox();
         jPanel2 = new javax.swing.JPanel();
+        chkPlaceMarker = new javax.swing.JCheckBox();
+        txtIpAddress = new java.awt.TextField();
+        lblIpAddress = new java.awt.Label();
+        btnSearchIP = new java.awt.Button();
+        panelWaypoints = new javax.swing.JPanel();
         listWaypoints = new java.awt.List();
         btnRemoveWaypoints = new java.awt.Button();
-        panelTab1 = new javax.swing.JPanel();
+        panelCountries = new javax.swing.JPanel();
         listCountries = new java.awt.List();
         chkCountryPlaceMarker = new javax.swing.JCheckBox();
         panelStatusBar = new javax.swing.JPanel();
@@ -197,14 +206,7 @@ public class MainWindow extends javax.swing.JFrame {
         jxMap.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
         getContentPane().add(jxMap, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 480));
 
-        btnSearchIP.setLabel("Lookup");
-        btnSearchIP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSearchIPActionPerformed(evt);
-            }
-        });
-
-        lblIpAddress.setText("IP Address or Hostname:");
+        panelLookup.setPreferredSize(new java.awt.Dimension(195, 455));
 
         tableGeoIP.setAutoCreateRowSorter(true);
         tableGeoIP.setModel(new javax.swing.table.DefaultTableModel(
@@ -228,50 +230,98 @@ public class MainWindow extends javax.swing.JFrame {
         tableGeoIP.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tableGeoIP);
 
-        chkPlaceMarker.setText("Place Marker");
+        label1.setText("label1");
+        label1.setVisible(false);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        label2.setText("Longitute:");
+
+        spnLongitude.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(0.5d)));
+        spnLongitude.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                spnLongitudeMouseWheelMoved(evt);
+            }
+        });
+        spnLongitude.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnLongitudeStateChanged(evt);
+            }
+        });
+
+        spnLatitude.setModel(new javax.swing.SpinnerNumberModel(Double.valueOf(0.0d), null, null, Double.valueOf(0.5d)));
+        spnLatitude.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                spnLatitudeMouseWheelMoved(evt);
+            }
+        });
+        spnLatitude.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                spnLatitudeStateChanged(evt);
+            }
+        });
+
+        label3.setText("Latitude:");
+
+        btnGotoLongLat.setLabel("Goto");
+        btnGotoLongLat.setMinimumSize(new java.awt.Dimension(57, 24));
+        btnGotoLongLat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGotoLongLatActionPerformed(evt);
+            }
+        });
+
+        chkPlaceMarkerLongLat.setText("Place Marker");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(txtIpAddress, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(chkPlaceMarker, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(14, 14, 14))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(chkPlaceMarkerLongLat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(11, 11, 11)
+                                .addComponent(btnGotoLongLat, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(spnLatitude)
+                            .addComponent(spnLongitude, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(spnLongitude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addComponent(txtIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(label3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(spnLatitude, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkPlaceMarker))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnGotoLongLat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chkPlaceMarkerLongLat))
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
-        btnSearchIP.getAccessibleContext().setAccessibleName("btnSearchIP");
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jTabbedPane1.addTab("IP Lookup", jPanel1);
+        chkPlaceMarker.setText("Place Marker");
 
-        btnRemoveWaypoints.setLabel("Remove Waypoint");
-        btnRemoveWaypoints.addActionListener(new java.awt.event.ActionListener() {
+        lblIpAddress.setText("IP Address or Hostname:");
+
+        btnSearchIP.setLabel("Lookup");
+        btnSearchIP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRemoveWaypointsActionPerformed(evt);
+                btnSearchIPActionPerformed(evt);
             }
         });
 
@@ -280,21 +330,97 @@ public class MainWindow extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(chkPlaceMarker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtIpAddress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addComponent(lblIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(txtIpAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chkPlaceMarker)
+                    .addComponent(btnSearchIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(11, Short.MAX_VALUE))
+        );
+
+        btnSearchIP.getAccessibleContext().setAccessibleName("btnSearchIP");
+
+        javax.swing.GroupLayout panelLookupLayout = new javax.swing.GroupLayout(panelLookup);
+        panelLookup.setLayout(panelLookupLayout);
+        panelLookupLayout.setHorizontalGroup(
+            panelLookupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLookupLayout.createSequentialGroup()
+                .addGroup(panelLookupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelLookupLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelLookupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                    .addGroup(panelLookupLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        panelLookupLayout.setVerticalGroup(
+            panelLookupLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLookupLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Lookup", panelLookup);
+
+        btnRemoveWaypoints.setLabel("Remove Waypoint");
+        btnRemoveWaypoints.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveWaypointsActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelWaypointsLayout = new javax.swing.GroupLayout(panelWaypoints);
+        panelWaypoints.setLayout(panelWaypointsLayout);
+        panelWaypointsLayout.setHorizontalGroup(
+            panelWaypointsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelWaypointsLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        panelWaypointsLayout.setVerticalGroup(
+            panelWaypointsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelWaypointsLayout.createSequentialGroup()
                 .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Waypoints", jPanel2);
+        jTabbedPane1.addTab("Waypoints", panelWaypoints);
 
         listCountries.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         listCountries.addActionListener(new java.awt.event.ActionListener() {
@@ -305,28 +431,29 @@ public class MainWindow extends javax.swing.JFrame {
 
         chkCountryPlaceMarker.setText("Place Marker");
 
-        javax.swing.GroupLayout panelTab1Layout = new javax.swing.GroupLayout(panelTab1);
-        panelTab1.setLayout(panelTab1Layout);
-        panelTab1Layout.setHorizontalGroup(
-            panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTab1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelCountriesLayout = new javax.swing.GroupLayout(panelCountries);
+        panelCountries.setLayout(panelCountriesLayout);
+        panelCountriesLayout.setHorizontalGroup(
+            panelCountriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCountriesLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(panelCountriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(chkCountryPlaceMarker, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(listCountries, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-        panelTab1Layout.setVerticalGroup(
-            panelTab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelTab1Layout.createSequentialGroup()
+        panelCountriesLayout.setVerticalGroup(
+            panelCountriesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelCountriesLayout.createSequentialGroup()
                 .addComponent(chkCountryPlaceMarker)
                 .addGap(1, 1, 1)
                 .addComponent(listCountries, javax.swing.GroupLayout.DEFAULT_SIZE, 431, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Countries", panelTab1);
+        jTabbedPane1.addTab("Countries", panelCountries);
 
         getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 0, 200, 480));
+        jTabbedPane1.getAccessibleContext().setAccessibleName("Lookup");
 
         panelStatusBar.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -597,12 +724,85 @@ public class MainWindow extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
     }//GEN-LAST:event_saveMenuItemActionPerformed
+
+    private void btnGotoLongLatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGotoLongLatActionPerformed
+        double lat = Double.parseDouble(spnLatitude.getValue().toString());
+        double lon = Double.parseDouble(spnLongitude.getValue().toString());        
+        String jsonData = HTTPUtility.DownloadWebsite(
+                String.format("http://maps.googleapis.com/maps/api/geocode/json?latlng=%2f,%2f&sensor=false", 
+                lat, lon)); 
+        System.out.println(jsonData);
+        Map<String, String> geoipData;
+        
+        try {
+            geoipData = new Gson().fromJson(jsonData, new TypeToken<HashMap<String,String>>(){}.getType());
+            //if(!"OK".equals(geoipData.get("status")))
+            //    return;
+        }
+        catch(JsonSyntaxException ex) {
+            System.out.println("bad");
+            //Bad host or ip, just exit!
+            return;
+        }
+        
+        //Get the table model to start adding elements
+        DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
+        //Remove all the rows in the table (clear it)
+        while (tableGeoIP.getRowCount() > 0) {
+            tableModel.removeRow(0);
+        }
+        for (String key : geoipData.keySet()) {
+            tableModel.addRow(new String[]{key, geoipData.get(key)});
+        }        
+        
+    }//GEN-LAST:event_btnGotoLongLatActionPerformed
+
+    private void spnLongitudeMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_spnLongitudeMouseWheelMoved
+        int sign = evt.getUnitsToScroll()>=0?1:-1;
+        if(sign==1) {
+            spnLongitude.setValue(spnLongitude.getModel().getPreviousValue());
+        }
+        else {
+            spnLongitude.setValue(spnLongitude.getModel().getNextValue());
+        }   
+    }//GEN-LAST:event_spnLongitudeMouseWheelMoved
+
+    private void spnLatitudeMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_spnLatitudeMouseWheelMoved
+        int sign = evt.getUnitsToScroll()>=0?1:-1;
+        if(sign==1) {
+            spnLatitude.setValue(spnLatitude.getModel().getPreviousValue());
+        }
+        else {
+            spnLatitude.setValue(spnLatitude.getModel().getNextValue());
+        }
+    }//GEN-LAST:event_spnLatitudeMouseWheelMoved
+
+    private void spnLatitudeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnLatitudeStateChanged
+        double val = new Double(spnLatitude.getValue().toString());
+        if(val < -90)
+            val = 90;
+        else if(val > 90)
+            val = -90;  
+        spnLatitude.setValue(val);
+    }//GEN-LAST:event_spnLatitudeStateChanged
+
+    private void spnLongitudeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnLongitudeStateChanged
+        double val = new Double(spnLongitude.getValue().toString());
+        if(val < -180)
+            val = 180;
+        else if(val > 180)
+            val = -180;  
+        spnLongitude.setValue(val);
+    }//GEN-LAST:event_spnLongitudeStateChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private java.awt.Button btnGotoLongLat;
     private java.awt.Button btnRemoveWaypoints;
     private java.awt.Button btnSearchIP;
     private javax.swing.JCheckBox chkCountryPlaceMarker;
     private javax.swing.JCheckBox chkPlaceMarker;
+    private javax.swing.JCheckBox chkPlaceMarkerLongLat;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -616,17 +816,24 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.jdesktop.swingx.JXMapKit jxMap;
+    private java.awt.Label label1;
+    private java.awt.Label label2;
+    private java.awt.Label label3;
     private java.awt.Label lblIpAddress;
     private javax.swing.JLabel lblStatus;
     private java.awt.List listCountries;
     private java.awt.List listWaypoints;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JPanel panelCountries;
+    private javax.swing.JPanel panelLookup;
     private javax.swing.JPanel panelStatusBar;
-    private javax.swing.JPanel panelTab1;
+    private javax.swing.JPanel panelWaypoints;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JSpinner spnLatitude;
+    private javax.swing.JSpinner spnLongitude;
     private javax.swing.JTable tableGeoIP;
     private java.awt.TextField txtIpAddress;
     // End of variables declaration//GEN-END:variables
