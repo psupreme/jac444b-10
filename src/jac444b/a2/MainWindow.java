@@ -4,24 +4,14 @@
  */
 package jac444b.a2;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
-import org.jdesktop.swingx.JXMapViewer;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.Waypoint;
 import org.jdesktop.swingx.mapviewer.WaypointPainter;
-import org.jdesktop.swingx.mapviewer.WaypointRenderer;
 
 /**
  *
@@ -729,21 +719,10 @@ public class MainWindow extends javax.swing.JFrame {
         double lat = Double.parseDouble(spnLatitude.getValue().toString());
         double lon = Double.parseDouble(spnLongitude.getValue().toString());        
         String jsonData = HTTPUtility.DownloadWebsite(
-                String.format("http://maps.googleapis.com/maps/api/geocode/json?latlng=%2f,%2f&sensor=false", 
+                String.format("http://maps.googleapis.com/maps/api/geocode/xml?latlng=%2f,%2f&sensor=false", 
                 lat, lon)); 
         System.out.println(jsonData);
-        Map<String, String> geoipData;
-        
-        try {
-            geoipData = new Gson().fromJson(jsonData, new TypeToken<HashMap<String,String>>(){}.getType());
-            //if(!"OK".equals(geoipData.get("status")))
-            //    return;
-        }
-        catch(JsonSyntaxException ex) {
-            System.out.println("bad");
-            //Bad host or ip, just exit!
-            return;
-        }
+        Map<String, String> geoipData = new HashMap<String,String>();
         
         //Get the table model to start adding elements
         DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
@@ -751,9 +730,12 @@ public class MainWindow extends javax.swing.JFrame {
         while (tableGeoIP.getRowCount() > 0) {
             tableModel.removeRow(0);
         }
+        /*
         for (String key : geoipData.keySet()) {
             tableModel.addRow(new String[]{key, geoipData.get(key)});
-        }        
+        }     
+        *
+        */
         
     }//GEN-LAST:event_btnGotoLongLatActionPerformed
 
