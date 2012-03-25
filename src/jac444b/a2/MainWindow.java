@@ -5,6 +5,8 @@
 package jac444b.a2;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -44,20 +46,21 @@ public class MainWindow extends javax.swing.JFrame {
     }
     
     private void AddWaypointByIP(String ipAddress, boolean addMarker, boolean showMetaData)
-    {
+    {    
         //Get the json data
         String info = HTTPUtility.DownloadWebsite("http://freegeoip.net/json/" + ipAddress);
         //Remove the braces and get the elements
         String[] values = info.replace("{", "").replace("}", "").split(",");
-        //A dictionary to store all geoIp data
+        //A dictionary to store all geoIp data        
         Map<String, String> geoipData = new HashMap<String, String>();
-        //Simple parsing for json elements
-        for (String element : values) {
-            //Get the data on both sides of the :
-            String[] keyValue = element.replace("\"", "").split(":");
-            //Stick it in the dictionary
-            geoipData.put(keyValue[0].trim(), keyValue[1].trim());
+        try {
+            geoipData = new Gson().fromJson(info, new TypeToken<HashMap<String,String>>(){}.getType());
         }
+        catch(JsonSyntaxException ex) {
+            //Bad host or ip, just exit!
+            return;
+        }
+        
         //Get the table model to start adding elements
         DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
         //Remove all the rows in the table (clear it)
