@@ -299,6 +299,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Save");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveMenuItem);
 
         saveAsMenuItem.setMnemonic('a');
@@ -468,6 +473,22 @@ public class MainWindow extends javax.swing.JFrame {
             //TODO: code exception
         }
     }//GEN-LAST:event_saveAsMenuItemActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+        File file = new File(System.getProperty("user.dir")+"\\waypoints.txt");
+        try {
+                PrintWriter out = new PrintWriter(new FileWriter(file));
+
+                // Write text to file
+                for(Waypoint w : waypoints)
+                {
+                    out.println(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
+                }
+                out.close();
+            } catch (IOException e){
+                //TODO: code exception
+            }
+    }//GEN-LAST:event_saveMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
