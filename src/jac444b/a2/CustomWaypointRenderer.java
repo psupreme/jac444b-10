@@ -18,7 +18,16 @@ import org.jdesktop.swingx.mapviewer.WaypointRenderer;
 public class CustomWaypointRenderer implements WaypointRenderer{
     public boolean paintWaypoint(Graphics2D g, JXMapViewer map, Waypoint wp) {
         WaypointExtension wwp =  (WaypointExtension)wp;
-
+        String[] lines = wwp.getText().split("\n");        
+        int width = -1;
+        int height = -1;
+        //Get the maximum line length
+        for(String line : lines) {
+            width = Math.max(width, (int) g.getFontMetrics().getStringBounds(line, g).getWidth());
+            height = Math.max(height, (int) g.getFontMetrics().getStringBounds(line, g).getHeight());
+        }
+        height *= lines.length;
+        
         //draw tab
         g.setPaint(new Color(0,0,255,200));
         Polygon triangle = new Polygon();
@@ -26,15 +35,18 @@ public class CustomWaypointRenderer implements WaypointRenderer{
         triangle.addPoint(11,11);
         triangle.addPoint(-11,11);
         g.fill(triangle);
-        int width = (int) g.getFontMetrics().getStringBounds(wwp.getText(), g).getWidth();
-        g.fillRoundRect(-width/2 -5, 10, width+10, 20, 10, 10);
+        g.fillRoundRect(-width/2 -5, 10, width+10, height, 10, 10);
 
         //draw text w/ shadow
-        g.setPaint(Color.BLACK);
-        g.drawString(wwp.getText(), -width/2-1, 26-1); //shadow
-        g.drawString(wwp.getText(), -width/2-1, 26-1); //shadow
-        g.setPaint(Color.WHITE);
-        g.drawString(wwp.getText(), -width/2, 26); //text
+        int y = 0;
+        for(String line : lines) {
+            g.setPaint(Color.BLACK);            
+            g.drawString(line, -width/2-1, 20+y); //shadow
+            g.drawString(line, -width/2-1, 20+y); //shadow
+            g.setPaint(Color.WHITE);
+            g.drawString(line, -width/2, 21+y); //text
+            y+=(int) g.getFontMetrics().getStringBounds(line, g).getHeight();
+        }
         return false;
     }
 }

@@ -422,7 +422,12 @@ public class MainWindow extends javax.swing.JFrame {
         GeoPosition position = new GeoPosition(Double.valueOf(geoipData.get("latitude")), Double.valueOf(geoipData.get("longitude")));
 
         if (chkPlaceMarker.isSelected()) {
-            AddWaypoint(new WaypointExtension("tet", position));
+            StringBuilder sb = new StringBuilder();  
+            sb.append("   City: " + geoipData.get("city") + "\n");
+            sb.append(" Region: " + geoipData.get("region_name") + "\n");
+            sb.append("Country: " + geoipData.get("country_name") + "\n");
+            
+            AddWaypoint(new WaypointExtension(sb.toString(), position));
         }
 
         jxMap.setCenterPosition(position);
