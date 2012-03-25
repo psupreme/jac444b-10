@@ -4,6 +4,7 @@
  */
 package jac444b.a2;
 
+import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
@@ -69,7 +70,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         GeoPosition position = new GeoPosition(Double.valueOf(geoipData.get("latitude")), Double.valueOf(geoipData.get("longitude")));
-
+        
         if (addMarker) {
             StringBuilder sb = new StringBuilder();  
             if(showMetaData) {            
