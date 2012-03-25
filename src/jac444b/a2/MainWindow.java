@@ -5,7 +5,14 @@
 package jac444b.a2;
 
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.Waypoint;
@@ -17,9 +24,6 @@ import org.jdesktop.swingx.mapviewer.WaypointPainter;
  */
 public class MainWindow extends javax.swing.JFrame {
 
-    /**
-     * Creates new form MainWindow
-     */
     void AddWaypoint(Waypoint wp) {
         waypoints.add(wp);
         WaypointPainter painter = new WaypointPainter();
@@ -32,7 +36,10 @@ public class MainWindow extends javax.swing.JFrame {
             listWaypoints.add(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
         }
     }
-    
+
+    /*
+     * Creates new form MainWindow
+     */
     public MainWindow() { 
         initComponents();       
                
@@ -61,6 +68,7 @@ public class MainWindow extends javax.swing.JFrame {
                 if(e.getButton() == 3){
                     GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
                     AddWaypoint(new Waypoint(location.getLatitude(), location.getLongitude()));
+                    jTabbedPane1.setSelectedIndex(2);
                 }
             }
 
@@ -282,6 +290,11 @@ public class MainWindow extends javax.swing.JFrame {
 
         openMenuItem.setMnemonic('o');
         openMenuItem.setText("Open");
+        openMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(openMenuItem);
 
         saveMenuItem.setMnemonic('s');
@@ -291,6 +304,11 @@ public class MainWindow extends javax.swing.JFrame {
         saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Save As ...");
         saveAsMenuItem.setDisplayedMnemonicIndex(5);
+        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveAsMenuItem);
 
         exitMenuItem.setMnemonic('x');
@@ -419,6 +437,37 @@ public class MainWindow extends javax.swing.JFrame {
             jxMap.getMainMap().setOverlayPainter(painter);
         }
     }//GEN-LAST:event_btnRemoveWaypointsActionPerformed
+
+    private void openMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openMenuItemActionPerformed
+
+
+    }//GEN-LAST:event_openMenuItemActionPerformed
+
+    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
+        JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Save");
+        fc.setApproveButtonText("Save");
+        
+        int retVal = fc.showOpenDialog(menuBar);
+        if (retVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            try {
+                    PrintWriter out = new PrintWriter(new FileWriter(file));
+
+                    // Write text to file
+                    for(Waypoint w : waypoints)
+                    {
+                        out.println(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
+                    }
+                    out.close();
+		} catch (IOException e){
+                    //TODO: code exception
+		}
+
+        } else {
+            //TODO: code exception
+        }
+    }//GEN-LAST:event_saveAsMenuItemActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
