@@ -41,6 +41,48 @@ public class MainWindow extends javax.swing.JFrame {
             listWaypoints.add(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
         }
     }
+    
+    void AddWaypointByIP(String ipAddress, boolean addMarker, boolean showMetaData)
+    {
+        //Get the json data
+        String info = HTTPUtility.DownloadWebsite("http://freegeoip.net/json/" + ipAddress);
+        //Remove the braces and get the elements
+        String[] values = info.replace("{", "").replace("}", "").split(",");
+        //A dictionary to store all geoIp data
+        Map<String, String> geoipData = new HashMap<String, String>();
+        //Simple parsing for json elements
+        for (String element : values) {
+            //Get the data on both sides of the :
+            String[] keyValue = element.replace("\"", "").split(":");
+            //Stick it in the dictionary
+            geoipData.put(keyValue[0].trim(), keyValue[1].trim());
+        }
+        //Get the table model to start adding elements
+        DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
+        //Remove all the rows in the table (clear it)
+        while (tableGeoIP.getRowCount() > 0) {
+            tableModel.removeRow(0);
+        }
+        for (String key : geoipData.keySet()) {
+            String friendlyKey = Character.toUpperCase(key.charAt(0)) + key.substring(1).replace("_", " ");
+            tableModel.addRow(new String[]{friendlyKey, geoipData.get(key)});
+        }
+
+        GeoPosition position = new GeoPosition(Double.valueOf(geoipData.get("latitude")), Double.valueOf(geoipData.get("longitude")));
+
+        if (addMarker) {
+            StringBuilder sb = new StringBuilder();  
+            if(showMetaData) {            
+                sb.append("City:    ").append(geoipData.get("city")).append("\n");
+                sb.append("Region:  ").append(geoipData.get("region_name")).append("\n");
+                sb.append("Country: ").append(geoipData.get("country_name")).append("\n");
+            }
+            
+            AddWaypoint(new WaypointExtension(sb.toString(), position));
+        }
+
+        jxMap.setCenterPosition(position);
+    }
 
     /*
      * Creates new form MainWindow
@@ -52,8 +94,8 @@ public class MainWindow extends javax.swing.JFrame {
             listCountries.add(countryList.get(i).getName());
         }
 
-        txtIpAddress.setText(HTTPUtility.GetIp());
-
+        txtIpAddress.setText(HTTPUtility.GetIp());        
+        
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
 
             @Override
@@ -95,6 +137,8 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        
+        AddWaypointByIP(txtIpAddress.getText().trim(), true, true);
     }
 
     /*
@@ -394,44 +438,8 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnSearchIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchIPActionPerformed
         if (txtIpAddress.getText().trim().length() <= 0) {
             return;
-        }
-        //Get the json data
-        String info = HTTPUtility.DownloadWebsite("http://freegeoip.net/json/" + txtIpAddress.getText().trim());
-        //Remove the braces and get the elements
-        String[] values = info.replace("{", "").replace("}", "").split(",");
-        //A dictionary to store all geoIp data
-        Map<String, String> geoipData = new HashMap<String, String>();
-        //Simple parsing for json elements
-        for (String element : values) {
-            //Get the data on both sides of the :
-            String[] keyValue = element.replace("\"", "").split(":");
-            //Stick it in the dictionary
-            geoipData.put(keyValue[0].trim(), keyValue[1].trim());
-        }
-        //Get the table model to start adding elements
-        DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
-        //Remove all the rows in the table (clear it)
-        while (tableGeoIP.getRowCount() > 0) {
-            tableModel.removeRow(0);
-        }
-        for (String key : geoipData.keySet()) {
-            String friendlyKey = Character.toUpperCase(key.charAt(0)) + key.substring(1).replace("_", " ");
-            tableModel.addRow(new String[]{friendlyKey, geoipData.get(key)});
-        }
-
-        GeoPosition position = new GeoPosition(Double.valueOf(geoipData.get("latitude")), Double.valueOf(geoipData.get("longitude")));
-
-        if (chkPlaceMarker.isSelected()) {
-            StringBuilder sb = new StringBuilder();  
-            sb.append("   City: " + geoipData.get("city") + "\n");
-            sb.append(" Region: " + geoipData.get("region_name") + "\n");
-            sb.append("Country: " + geoipData.get("country_name") + "\n");
-            
-            AddWaypoint(new WaypointExtension(sb.toString(), position));
-        }
-
-        jxMap.setCenterPosition(position);
-
+        }        
+        AddWaypointByIP(txtIpAddress.getText().trim(), chkPlaceMarker.isSelected(), true);
     }//GEN-LAST:event_btnSearchIPActionPerformed
 
     private void btnRemoveWaypointsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveWaypointsActionPerformed
