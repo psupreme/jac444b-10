@@ -9,9 +9,16 @@ import java.io.*;
 import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 import org.jdesktop.swingx.mapviewer.Waypoint;
 import org.jdesktop.swingx.mapviewer.WaypointPainter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 /**
  *
@@ -34,9 +41,8 @@ public class MainWindow extends javax.swing.JFrame {
             listWaypoints.add(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
         }
     }
-    
-    private void AddWaypointByIP(String ipAddress, boolean addMarker, boolean showMetaData)
-    {    
+
+    private void AddWaypointByIP(String ipAddress, boolean addMarker, boolean showMetaData) {
         //Get the json data
         String info = HTTPUtility.DownloadWebsite("http://freegeoip.net/json/" + ipAddress);
         //Remove the braces and get the elements
@@ -50,7 +56,7 @@ public class MainWindow extends javax.swing.JFrame {
             //Stick it in the dictionary
             geoipData.put(keyValue[0].trim(), keyValue[1].trim());
         }
-        
+
         //Get the table model to start adding elements
         DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
         //Remove all the rows in the table (clear it)
@@ -63,15 +69,15 @@ public class MainWindow extends javax.swing.JFrame {
         }
 
         GeoPosition position = new GeoPosition(Double.valueOf(geoipData.get("latitude")), Double.valueOf(geoipData.get("longitude")));
-        
+
         if (addMarker) {
-            StringBuilder sb = new StringBuilder();  
-            if(showMetaData) {            
+            StringBuilder sb = new StringBuilder();
+            if (showMetaData) {
                 sb.append("City:    ").append(geoipData.get("city")).append("\n");
                 sb.append("Region:  ").append(geoipData.get("region_name")).append("\n");
                 sb.append("Country: ").append(geoipData.get("country_name")).append("\n");
             }
-            
+
             AddWaypoint(new WaypointExtension(sb.toString(), position));
         }
 
@@ -88,8 +94,8 @@ public class MainWindow extends javax.swing.JFrame {
             listCountries.add(countryList.get(i).getName());
         }
 
-        txtIpAddress.setText(HTTPUtility.GetIp());        
-        
+        txtIpAddress.setText(HTTPUtility.GetIp());
+
         jxMap.getMainMap().addMouseMotionListener(new java.awt.event.MouseMotionListener() {
 
             @Override
@@ -564,9 +570,9 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
     private void listCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listCountriesActionPerformed
-        Country c = countryList.get(listCountries.getSelectedIndex());        
-        if(chkCountryPlaceMarker.isSelected()) {
-             AddWaypoint(new WaypointExtension(c.getName(), c.getLocation()));
+        Country c = countryList.get(listCountries.getSelectedIndex());
+        if (chkCountryPlaceMarker.isSelected()) {
+            AddWaypoint(new WaypointExtension(c.getName(), c.getLocation()));
         }
         jxMap.setCenterPosition(c.getLocation());
     }//GEN-LAST:event_listCountriesActionPerformed
@@ -574,7 +580,7 @@ public class MainWindow extends javax.swing.JFrame {
     private void btnSearchIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchIPActionPerformed
         if (txtIpAddress.getText().trim().length() <= 0) {
             return;
-        }        
+        }
         AddWaypointByIP(txtIpAddress.getText().trim(), chkPlaceMarker.isSelected(), true);
     }//GEN-LAST:event_btnSearchIPActionPerformed
 
@@ -630,7 +636,7 @@ public class MainWindow extends javax.swing.JFrame {
                         painter.setWaypoints(waypoints);
                         painter.setRenderer(new CustomWaypointRenderer());
                         jxMap.getMainMap().setOverlayPainter(painter);
-                        
+
                     } finally {
                         // close the streams
                         try {
@@ -652,7 +658,7 @@ public class MainWindow extends javax.swing.JFrame {
         JFileChooser fc = new JFileChooser();
         fc.setDialogTitle("Save");
         fc.setApproveButtonText("Save");
-        
+
         //get the selected file
         int retVal = fc.showOpenDialog(menuBar);
         if (retVal == JFileChooser.APPROVE_OPTION) {
@@ -689,40 +695,97 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
         File file = new File(System.getProperty("user.dir") + "\\waypoints");
+        try {
+            //create the file steam
+            FileOutputStream fis = new FileOutputStream(file);
+            // create the object stream
+            ObjectOutputStream ois = new ObjectOutputStream(fis);
             try {
-                //create the file steam
-                FileOutputStream fis = new FileOutputStream(file);
-                // create the object stream
-                ObjectOutputStream ois = new ObjectOutputStream(fis);
-                try {
-                    //write each object in waypoints
-                    for (Waypoint w : waypoints) {
-                        ois.writeObject(new WaypointData(((WaypointExtension) w).getText(), w.getPosition().getLatitude(), w.getPosition().getLongitude()));
-                    }
-                    //empty the buffer
-                    ois.flush();
-
-                } finally {
-                    //close the streams
-                    try {
-                        ois.close();
-                    } finally {
-                        fis.close();
-                    }
+                //write each object in waypoints
+                for (Waypoint w : waypoints) {
+                    ois.writeObject(new WaypointData(((WaypointExtension) w).getText(), w.getPosition().getLatitude(), w.getPosition().getLongitude()));
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                //empty the buffer
+                ois.flush();
+
+            } finally {
+                //close the streams
+                try {
+                    ois.close();
+                } finally {
+                    fis.close();
+                }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void btnGotoLongLatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGotoLongLatActionPerformed
         double lat = Double.parseDouble(spnLatitude.getValue().toString());
-        double lon = Double.parseDouble(spnLongitude.getValue().toString());        
-        String jsonData = HTTPUtility.DownloadWebsite(
-                String.format("http://maps.googleapis.com/maps/api/geocode/xml?latlng=%2f,%2f&sensor=false", 
-                lat, lon)); 
-        System.out.println(jsonData);
-        Map<String, String> geoipData = new HashMap<String,String>();
+        double lon = Double.parseDouble(spnLongitude.getValue().toString());
+        String xmlData = HTTPUtility.DownloadWebsite(
+                String.format("http://maps.googleapis.com/maps/api/geocode/xml?latlng=%2f,%2f&sensor=false",
+                lat, lon));
+        System.out.println(xmlData);
+        Document data = null;
+        //The data that will be used in the table
+        Map<String, String> latlongData = new HashMap<String, String>();
+        try {
+            //Get the document safely
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            data = builder.parse(new InputSource(new StringReader(xmlData)));
+            data.getDocumentElement().normalize();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        if (data == null) {
+            return;
+        }
+        //Get the main results
+        NodeList results = data.getElementsByTagName("result");
+        for (int i = 0; i < results.getLength(); i++) {
+            //Get the result @ i
+            Node n = results.item(i);
+            if(n.getNodeType() == Node.ELEMENT_NODE) {
+                Element  fe = (Element)n;
+                //Get the type of the result
+                NodeList nl = fe.getElementsByTagName("type");
+                String itemtext = nl.item(0).getTextContent();
+                //Ensure that the type is what we're looking for
+                if(itemtext.equals("street_address") || itemtext.equals("administrative_area_level_2")) {
+                    //Get the address component
+                    NodeList addresses = fe.getElementsByTagName("address_component");
+                    for(int j = 0; j < addresses.getLength(); j++) {
+                        Element addr = (Element)addresses.item(j);
+                        String type = addr.getElementsByTagName("type").item(0).getTextContent();
+                        //Convert bad names to good ones
+                        if(type.equals("administrative_area_level_2"))
+                            type = "Region";
+                        else if(type.equals("administrative_area_level_1"))
+                            type = "City";                        
+                        String addrData = addr.getElementsByTagName("long_name").item(0).getTextContent();
+                        //Make the name look more pretty
+                        type = Character.toUpperCase(type.charAt(0)) + type.substring(1).replace("_", " ");
+                                                
+                        //Add it to the table if not already added
+                        if(!latlongData.containsKey(type))
+                            latlongData.put(type, addrData);
+                    }                   
+                }
+            }
+        }
+
+        if(chkPlaceMarkerLongLat.isSelected()) {
+            StringBuilder sb = new StringBuilder();            
+            sb.append("City: ").append(latlongData.get("City")).append("\n");
+            sb.append("Region: ").append(latlongData.get("Region")).append("\n");
+            sb.append("Country: ").append(latlongData.get("Country")).append("\n");
+            
+            AddWaypoint(new WaypointExtension(sb.toString(), new GeoPosition(lat,lon)));
+        }
         
         //Get the table model to start adding elements
         DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
@@ -730,53 +793,51 @@ public class MainWindow extends javax.swing.JFrame {
         while (tableGeoIP.getRowCount() > 0) {
             tableModel.removeRow(0);
         }
-        /*
-        for (String key : geoipData.keySet()) {
-            tableModel.addRow(new String[]{key, geoipData.get(key)});
-        }     
-        *
-        */
+
+        for (String key : latlongData.keySet()) {
+            tableModel.addRow(new String[]{key, latlongData.get(key)});
+        }
         
+        jxMap.setCenterPosition(new GeoPosition(lat,lon));
     }//GEN-LAST:event_btnGotoLongLatActionPerformed
 
     private void spnLongitudeMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_spnLongitudeMouseWheelMoved
-        int sign = evt.getUnitsToScroll()>=0?1:-1;
-        if(sign==1) {
+        int sign = evt.getUnitsToScroll() >= 0 ? 1 : -1;
+        if (sign == 1) {
             spnLongitude.setValue(spnLongitude.getModel().getPreviousValue());
-        }
-        else {
+        } else {
             spnLongitude.setValue(spnLongitude.getModel().getNextValue());
-        }   
+        }
     }//GEN-LAST:event_spnLongitudeMouseWheelMoved
 
     private void spnLatitudeMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_spnLatitudeMouseWheelMoved
-        int sign = evt.getUnitsToScroll()>=0?1:-1;
-        if(sign==1) {
+        int sign = evt.getUnitsToScroll() >= 0 ? 1 : -1;
+        if (sign == 1) {
             spnLatitude.setValue(spnLatitude.getModel().getPreviousValue());
-        }
-        else {
+        } else {
             spnLatitude.setValue(spnLatitude.getModel().getNextValue());
         }
     }//GEN-LAST:event_spnLatitudeMouseWheelMoved
 
     private void spnLatitudeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnLatitudeStateChanged
         double val = new Double(spnLatitude.getValue().toString());
-        if(val < -90)
+        if (val < -90) {
             val = 90;
-        else if(val > 90)
-            val = -90;  
+        } else if (val > 90) {
+            val = -90;
+        }
         spnLatitude.setValue(val);
     }//GEN-LAST:event_spnLatitudeStateChanged
 
     private void spnLongitudeStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spnLongitudeStateChanged
         double val = new Double(spnLongitude.getValue().toString());
-        if(val < -180)
+        if (val < -180) {
             val = 180;
-        else if(val > 180)
-            val = -180;  
+        } else if (val > 180) {
+            val = -180;
+        }
         spnLongitude.setValue(val);
     }//GEN-LAST:event_spnLongitudeStateChanged
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private java.awt.Button btnGotoLongLat;
