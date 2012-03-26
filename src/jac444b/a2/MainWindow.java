@@ -116,7 +116,12 @@ public class MainWindow extends javax.swing.JFrame {
                 if (e.getButton() == 3) {
                     GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
                     AddWaypoint(new WaypointExtension("test", location));
-                    jTabbedPane1.setSelectedIndex(2);
+                }
+                //middle mouse
+                else if(e.getButton() == 2) {
+                    GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
+                    spnLongitude.setValue(location.getLongitude());
+                    spnLatitude.setValue(location.getLatitude());
                 }
             }
 
@@ -727,7 +732,6 @@ public class MainWindow extends javax.swing.JFrame {
         String xmlData = HTTPUtility.DownloadWebsite(
                 String.format("http://maps.googleapis.com/maps/api/geocode/xml?latlng=%2f,%2f&sensor=false",
                 lat, lon));
-        System.out.println(xmlData);
         Document data = null;
         //The data that will be used in the table
         Map<String, String> latlongData = new HashMap<String, String>();
