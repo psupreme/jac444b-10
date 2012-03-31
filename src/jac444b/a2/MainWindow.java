@@ -180,6 +180,10 @@ public class MainWindow extends javax.swing.JFrame {
         panelWaypoints = new javax.swing.JPanel();
         listWaypoints = new java.awt.List();
         btnRemoveWaypoints = new java.awt.Button();
+        jPanel3 = new javax.swing.JPanel();
+        lblWaypointText = new javax.swing.JLabel();
+        txtWaypointText = new javax.swing.JTextField();
+        btnWaypointText = new javax.swing.JButton();
         panelCountries = new javax.swing.JPanel();
         listCountries = new java.awt.List();
         chkCountryPlaceMarker = new javax.swing.JCheckBox();
@@ -402,20 +406,61 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblWaypointText.setText("Add Waypoint Text");
+
+        btnWaypointText.setText("Add Text");
+        btnWaypointText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnWaypointTextActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtWaypointText)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(lblWaypointText)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnWaypointText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblWaypointText)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtWaypointText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnWaypointText)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout panelWaypointsLayout = new javax.swing.GroupLayout(panelWaypoints);
         panelWaypoints.setLayout(panelWaypointsLayout);
         panelWaypointsLayout.setHorizontalGroup(
             panelWaypointsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelWaypointsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelWaypointsLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelWaypointsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelWaypointsLayout.setVerticalGroup(
             panelWaypointsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelWaypointsLayout.createSequentialGroup()
-                .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                .addComponent(listWaypoints, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnRemoveWaypoints, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -842,11 +887,17 @@ public class MainWindow extends javax.swing.JFrame {
         }
         spnLongitude.setValue(val);
     }//GEN-LAST:event_spnLongitudeStateChanged
+
+    private void btnWaypointTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWaypointTextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnWaypointTextActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private java.awt.Button btnGotoLongLat;
     private java.awt.Button btnRemoveWaypoints;
     private java.awt.Button btnSearchIP;
+    private javax.swing.JButton btnWaypointText;
     private javax.swing.JCheckBox chkCountryPlaceMarker;
     private javax.swing.JCheckBox chkPlaceMarker;
     private javax.swing.JCheckBox chkPlaceMarkerLongLat;
@@ -860,6 +911,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private org.jdesktop.swingx.JXMapKit jxMap;
@@ -868,6 +920,7 @@ public class MainWindow extends javax.swing.JFrame {
     private java.awt.Label label3;
     private java.awt.Label lblIpAddress;
     private javax.swing.JLabel lblStatus;
+    private javax.swing.JLabel lblWaypointText;
     private java.awt.List listCountries;
     private java.awt.List listWaypoints;
     private javax.swing.JMenuBar menuBar;
@@ -883,6 +936,7 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSpinner spnLongitude;
     private javax.swing.JTable tableGeoIP;
     private java.awt.TextField txtIpAddress;
+    private javax.swing.JTextField txtWaypointText;
     // End of variables declaration//GEN-END:variables
     private Set<Waypoint> waypoints = new HashSet<Waypoint>();
     ArrayList<Country> countryList = Country.AllCountries();
