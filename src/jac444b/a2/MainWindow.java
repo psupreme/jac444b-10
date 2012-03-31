@@ -28,12 +28,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void AddWaypoint(WaypointExtension wp) {
         waypoints.add(wp);
-        WaypointPainter painter = new WaypointPainter();
-        painter.setWaypoints(waypoints);
-        //create a renderer
-        painter.setRenderer(new CustomWaypointRenderer());
-        jxMap.getMainMap().setOverlayPainter(painter);
-        jxMap.getMainMap().repaint();
+        redraw();
 
         listWaypoints.removeAll();
         for (Iterator<Waypoint> it = waypoints.iterator(); it.hasNext();) {
@@ -645,11 +640,7 @@ public class MainWindow extends javax.swing.JFrame {
             }
             listWaypoints.remove(listWaypoints.getSelectedIndex());
 
-            //repaint the waypoints
-            WaypointPainter painter = new WaypointPainter();
-            painter.setWaypoints(waypoints);
-            painter.setRenderer(new CustomWaypointRenderer());
-            jxMap.getMainMap().setOverlayPainter(painter);
+            redraw();
         }
     }//GEN-LAST:event_btnRemoveWaypointsActionPerformed
 
@@ -681,11 +672,7 @@ public class MainWindow extends javax.swing.JFrame {
                             Waypoint w = it.next();
                             listWaypoints.add(w.getPosition().getLatitude() + " " + w.getPosition().getLongitude());
                         }
-                        //repaint the waypoints
-                        WaypointPainter painter = new WaypointPainter();
-                        painter.setWaypoints(waypoints);
-                        painter.setRenderer(new CustomWaypointRenderer());
-                        jxMap.getMainMap().setOverlayPainter(painter);
+                        redraw();
 
                     } finally {
                         // close the streams
@@ -892,6 +879,14 @@ public class MainWindow extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnWaypointTextActionPerformed
 
+    private void redraw(){
+        WaypointPainter painter = new WaypointPainter();
+        painter.setWaypoints(waypoints);
+        //create a renderer
+        painter.setRenderer(new CustomWaypointRenderer());
+        jxMap.getMainMap().setOverlayPainter(painter);
+        jxMap.getMainMap().repaint();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private java.awt.Button btnGotoLongLat;
