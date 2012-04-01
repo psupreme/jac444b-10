@@ -25,6 +25,7 @@ import org.xml.sax.InputSource;
  * @author Clinton Bale & Jesse Santos
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class MainWindow extends javax.swing.JFrame {
 
     private void AddWaypoint(WaypointExtension wp) {
