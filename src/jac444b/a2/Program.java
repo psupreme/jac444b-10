@@ -1,9 +1,8 @@
 package jac444b.a2;
 
-
 /**
- *
- * @author psupreme
+ * @author Clinton Bale & Jesse Santos
+ * @version 1.0
  */
 public class Program {
 
@@ -42,6 +41,7 @@ public class Program {
          * Create and display the form
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new MainWindow().setVisible(true);
             }

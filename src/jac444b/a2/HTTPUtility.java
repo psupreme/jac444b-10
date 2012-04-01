@@ -13,37 +13,48 @@ import java.net.URL;
 
 /**
  *
- * @author Testee
+ * @author Clinton Bale
+ * @version 1.0
  */
 public class HTTPUtility {
+
     private HTTPUtility() {
     }
-    
+
+    /**
+     * 
+     * @return Your ip address.
+     */
     public static String GetIp() {
+        //Simply downloads your ip.
         return DownloadWebsite("http://automation.whatismyip.com/n09230945.asp");
     }
-    
+
+    /**
+     * 
+     * @param address
+     * @return The websites' HTML data.
+     */
     public static String DownloadWebsite(String address) {
-        StringBuilder sb = new StringBuilder(); 
+        StringBuilder sb = new StringBuilder();
         try {
-            URL url = new URL(address);  
+            //Fetches data from the URL.
+            URL url = new URL(address);
             InputStream is = url.openStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line = null;
-            
-            while((line = reader.readLine()) != null) {
+
+            while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            
+
             reader.close();
-            is.close();            
-        }
-        catch (MalformedURLException ex) {
+            is.close();
+        } catch (MalformedURLException ex) {
+            return ex.getLocalizedMessage();
+        } catch (IOException ex) {
             return ex.getLocalizedMessage();
         }
-        catch (IOException ex) {
-            return ex.getLocalizedMessage();
-        }        
         return sb.toString();
     }
 }

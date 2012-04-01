@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jac444b.a2;
 
 import java.util.ArrayList;
@@ -9,32 +5,56 @@ import java.util.Locale;
 import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 /**
- *
  * @author Clinton Bale
  * @version 1.0
  */
 public class Country {
+
     private String _name;
     private String _code;
     private GeoPosition _location;
-    
+
+    /**
+     * 
+     * @param code
+     * @param name
+     * @param location
+     */
     public Country(String code, String name, GeoPosition location) {
         this._name = name;
         this._code = code;
-        this._location = location;   
+        this._location = location;
     }
-    
+
+    /**
+     * 
+     * @return The name of the country
+     */
     public String getName() {
         return _name;
     }
+
+    /**
+     * 
+     * @return The country code
+     */
     public String getCode() {
         return _code;
     }
+
+    /**
+     * 
+     * @return Location of country
+     */
     public GeoPosition getLocation() {
         return _location;
     }
-    
-    public static ArrayList<Country> AllCountries() {        
+
+    /**
+     * 
+     * @return A list of countries
+     */
+    public static ArrayList<Country> AllCountries() {
         ArrayList<Country> countries = new ArrayList<Country>();
         countries.add(new Country("AD", "Andorra", new GeoPosition(42.5000, 1.5000)));
         countries.add(new Country("AE", "United Arab Emirates", new GeoPosition(24.0000, 54.0000)));
@@ -277,5 +297,5 @@ public class Country {
         countries.add(new Country("ZM", "Zambia", new GeoPosition(-15.0000, 30.0000)));
         countries.add(new Country("ZW", "Zimbabwe", new GeoPosition(-20.0000, 30.0000)));
         return countries;
-    }   
+    }
 }

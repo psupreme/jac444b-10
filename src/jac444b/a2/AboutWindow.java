@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jac444b.a2;
 
 /**
  *
- * @author Testee
+ * @author Clinton Bale & Jesse Santos
+ * @version 1.0
  */
 public class AboutWindow extends javax.swing.JFrame {
 
@@ -14,7 +11,7 @@ public class AboutWindow extends javax.swing.JFrame {
      * Creates new form AboutWindow
      */
     public AboutWindow() {
-                try {
+        try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -81,7 +78,6 @@ public class AboutWindow extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

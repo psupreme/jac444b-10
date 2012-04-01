@@ -22,7 +22,8 @@ import org.xml.sax.InputSource;
 
 /**
  *
- * @author Testee
+ * @author Clinton Bale & Jesse Santos
+ * @version 1.0
  */
 public class MainWindow extends javax.swing.JFrame {
 
@@ -82,6 +83,9 @@ public class MainWindow extends javax.swing.JFrame {
     /*
      * Creates new form MainWindow
      */
+    /**
+     * 
+     */
     public MainWindow() {
         initComponents();
 
@@ -111,9 +115,8 @@ public class MainWindow extends javax.swing.JFrame {
                 if (e.getButton() == 3) {
                     GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
                     AddWaypoint(new WaypointExtension("New Waypoint", location));
-                }
-                //middle mouse
-                else if(e.getButton() == 2) {
+                } //middle mouse
+                else if (e.getButton() == 2) {
                     GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
                     spnLongitude.setValue(location.getLongitude());
                     spnLatitude.setValue(location.getLatitude());
@@ -762,44 +765,46 @@ public class MainWindow extends javax.swing.JFrame {
         for (int i = 0; i < results.getLength(); i++) {
             //Get the result @ i
             Node n = results.item(i);
-            if(n.getNodeType() == Node.ELEMENT_NODE) {
-                Element  fe = (Element)n;
+            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                Element fe = (Element) n;
                 //Get the type of the result
                 NodeList nl = fe.getElementsByTagName("type");
                 String itemtext = nl.item(0).getTextContent();
                 //Ensure that the type is what we're looking for
-                if(itemtext.equals("street_address") || itemtext.equals("administrative_area_level_2")) {
+                if (itemtext.equals("street_address") || itemtext.equals("administrative_area_level_2")) {
                     //Get the address component
                     NodeList addresses = fe.getElementsByTagName("address_component");
-                    for(int j = 0; j < addresses.getLength(); j++) {
-                        Element addr = (Element)addresses.item(j);
+                    for (int j = 0; j < addresses.getLength(); j++) {
+                        Element addr = (Element) addresses.item(j);
                         String type = addr.getElementsByTagName("type").item(0).getTextContent();
                         //Convert bad names to good ones
-                        if(type.equals("administrative_area_level_2"))
+                        if (type.equals("administrative_area_level_2")) {
                             type = "Region";
-                        else if(type.equals("administrative_area_level_1"))
-                            type = "City";                        
+                        } else if (type.equals("administrative_area_level_1")) {
+                            type = "City";
+                        }
                         String addrData = addr.getElementsByTagName("long_name").item(0).getTextContent();
                         //Make the name look more pretty
                         type = Character.toUpperCase(type.charAt(0)) + type.substring(1).replace("_", " ");
-                                                
+
                         //Add it to the table if not already added
-                        if(!latlongData.containsKey(type))
+                        if (!latlongData.containsKey(type)) {
                             latlongData.put(type, addrData);
-                    }                   
+                        }
+                    }
                 }
             }
         }
 
-        if(chkPlaceMarkerLongLat.isSelected()) {
-            StringBuilder sb = new StringBuilder();            
+        if (chkPlaceMarkerLongLat.isSelected()) {
+            StringBuilder sb = new StringBuilder();
             sb.append("City: ").append(latlongData.get("City")).append("\n");
             sb.append("Region: ").append(latlongData.get("Region")).append("\n");
             sb.append("Country: ").append(latlongData.get("Country")).append("\n");
-            
-            AddWaypoint(new WaypointExtension(sb.toString(), new GeoPosition(lat,lon)));
+
+            AddWaypoint(new WaypointExtension(sb.toString(), new GeoPosition(lat, lon)));
         }
-        
+
         //Get the table model to start adding elements
         DefaultTableModel tableModel = (DefaultTableModel) tableGeoIP.getModel();
         //Remove all the rows in the table (clear it)
@@ -810,8 +815,8 @@ public class MainWindow extends javax.swing.JFrame {
         for (String key : latlongData.keySet()) {
             tableModel.addRow(new String[]{key, latlongData.get(key)});
         }
-        
-        jxMap.setCenterPosition(new GeoPosition(lat,lon));
+
+        jxMap.setCenterPosition(new GeoPosition(lat, lon));
     }//GEN-LAST:event_btnGotoLongLatActionPerformed
 
     private void spnLongitudeMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_spnLongitudeMouseWheelMoved
@@ -854,19 +859,19 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void btnWaypointTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWaypointTextActionPerformed
         //if a waypoint is selected
-        if(listWaypoints.getSelectedIndex() >= 0){                    
-            GeoPosition gp = new GeoPosition(Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[0]), 
-                                             Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[1]));
+        if (listWaypoints.getSelectedIndex() >= 0) {
+            GeoPosition gp = new GeoPosition(Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[0]),
+                    Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[1]));
             //set the waypoint text to blank if there is no text
             String str = "      ";
-            if(txtWaypointText.getText().length() > 0){
-                str = txtWaypointText.getText().replace("\\n","\n");
+            if (txtWaypointText.getText().length() > 0) {
+                str = txtWaypointText.getText().replace("\\n", "\n");
             }
             //loop through the waypoints until the selected one is found
-            for(Waypoint w : waypoints){
-                if(w.getPosition().equals(gp)){
+            for (Waypoint w : waypoints) {
+                if (w.getPosition().equals(gp)) {
                     //when found set the waypoint text and redraw
-                    ((WaypointExtension)w).setText(str);
+                    ((WaypointExtension) w).setText(str);
                     redraw();
                     return;
                 }
@@ -875,14 +880,14 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_btnWaypointTextActionPerformed
 
     private void listWaypointsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listWaypointsActionPerformed
-        if(listWaypoints.getSelectedIndex() >= 0){
-            GeoPosition gp = new GeoPosition(Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[0]), 
-                                             Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[1]));
+        if (listWaypoints.getSelectedIndex() >= 0) {
+            GeoPosition gp = new GeoPosition(Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[0]),
+                    Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[1]));
             jxMap.setCenterPosition(gp);
         }
     }//GEN-LAST:event_listWaypointsActionPerformed
 
-    private void redraw(){
+    private void redraw() {
         WaypointPainter painter = new WaypointPainter();
         painter.setWaypoints(waypoints);
         //create a renderer

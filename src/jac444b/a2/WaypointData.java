@@ -1,34 +1,45 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jac444b.a2;
 
 import java.io.Serializable;
 
 /**
  *
- * @author Administrator
+ * @author Jesse Santos
+ * @version 1.0
  */
-public class WaypointData implements Serializable{
+public class WaypointData implements Serializable {
+
     private String text;
     private Double longitude;
     private Double latitude;
-    
-    WaypointData(String text, Double latitude, Double longitude)
-    {
+
+    WaypointData(String text, Double latitude, Double longitude) {
         this.text = text;
         this.longitude = longitude;
         this.latitude = latitude;
     }
-    
-    public String getText(){
+
+    /**
+     * 
+     * @return The text of the waypoint
+     */
+    public String getText() {
         return text;
     }
-    public Double getLatitude(){
+
+    /**
+     * 
+     * @return The latitude of the waypoint
+     */
+    public Double getLatitude() {
         return latitude;
     }
-    public Double getLongitude(){
+
+    /**
+     * 
+     * @return The longitude of the waypoint
+     */
+    public Double getLongitude() {
         return longitude;
     }
 }

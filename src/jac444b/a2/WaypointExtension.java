@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package jac444b.a2;
 
 import org.jdesktop.swingx.mapviewer.GeoPosition;
@@ -9,19 +5,36 @@ import org.jdesktop.swingx.mapviewer.Waypoint;
 
 /**
  *
- * @author jsantos13
+ * @author Jesse Santos
+ * @version 1.0
  */
-public class WaypointExtension extends Waypoint{
+public class WaypointExtension extends Waypoint {
+
     private String text;
-    
-    public WaypointExtension(String text, GeoPosition coords){
+
+    /**
+     * 
+     * @param text
+     * @param coords
+     */
+    public WaypointExtension(String text, GeoPosition coords) {
         super(coords.getLatitude(), coords.getLongitude());
         this.text = text;
     }
-    public String getText(){
+
+    /**
+     * 
+     * @return The text of the waypoint
+     */
+    public String getText() {
         return text;
     }
-    public void setText(String text){
+
+    /**
+     * 
+     * @param text
+     */
+    public void setText(String text) {
         this.text = text;
     }
 }
