@@ -611,6 +611,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         AboutWindow ab = new AboutWindow();
+        ab.setDefaultCloseOperation(ab.HIDE_ON_CLOSE);
         ab.setVisible(true);
     }//GEN-LAST:event_aboutMenuItemActionPerformed
 
