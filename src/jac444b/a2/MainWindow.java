@@ -110,7 +110,7 @@ public class MainWindow extends javax.swing.JFrame {
                 //if right mouse button is clicked
                 if (e.getButton() == 3) {
                     GeoPosition location = jxMap.getMainMap().convertPointToGeoPosition(jxMap.getMousePosition());
-                    AddWaypoint(new WaypointExtension("test", location));
+                    AddWaypoint(new WaypointExtension("New Waypoint", location));
                 }
                 //middle mouse
                 else if(e.getButton() == 2) {
@@ -876,7 +876,25 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_spnLongitudeStateChanged
 
     private void btnWaypointTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWaypointTextActionPerformed
-        // TODO add your handling code here:
+        //if a waypoint is selected
+        if(listWaypoints.getSelectedIndex() >= 0){                    
+            GeoPosition gp = new GeoPosition(Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[0]), 
+                                             Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[1]));
+            //set the waypoint text to blank if there is no text
+            String str = "      ";
+            if(txtWaypointText.getText().length() > 0){
+                str = txtWaypointText.getText();
+            }
+            //loop through the waypoints until the selected one is found
+            for(Waypoint w : waypoints){
+                if(w.getPosition().equals(gp)){
+                    //when found set the waypoint text and redraw
+                    ((WaypointExtension)w).setText(str);
+                    redraw();
+                    return;
+                }
+            }
+        }
     }//GEN-LAST:event_btnWaypointTextActionPerformed
 
     private void redraw(){
