@@ -394,6 +394,12 @@ public class MainWindow extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Lookup", panelLookup);
 
+        listWaypoints.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                listWaypointsActionPerformed(evt);
+            }
+        });
+
         btnRemoveWaypoints.setLabel("Remove Waypoint");
         btnRemoveWaypoints.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -777,7 +783,7 @@ public class MainWindow extends javax.swing.JFrame {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
+        System.out.println(xmlData);
         if (data == null) {
             return;
         }
@@ -884,7 +890,7 @@ public class MainWindow extends javax.swing.JFrame {
             //set the waypoint text to blank if there is no text
             String str = "      ";
             if(txtWaypointText.getText().length() > 0){
-                str = txtWaypointText.getText();
+                str = txtWaypointText.getText().replace("\\n","\n");
             }
             //loop through the waypoints until the selected one is found
             for(Waypoint w : waypoints){
@@ -897,6 +903,14 @@ public class MainWindow extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnWaypointTextActionPerformed
+
+    private void listWaypointsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_listWaypointsActionPerformed
+        if(listWaypoints.getSelectedIndex() >= 0){
+            GeoPosition gp = new GeoPosition(Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[0]), 
+                                             Double.parseDouble(listWaypoints.getSelectedItem().split(" ")[1]));
+            jxMap.setCenterPosition(gp);
+        }
+    }//GEN-LAST:event_listWaypointsActionPerformed
 
     private void redraw(){
         WaypointPainter painter = new WaypointPainter();
